@@ -241,9 +241,9 @@
   .fs-lead   { font-size: clamp(1.0625rem, 1.5vw, 1.375rem); }
 
   [dir="rtl"] .fs-mega { font-size: clamp(3.5rem, 17vw, 15rem); }
-  [dir="rtl"] .fs-hero { font-size: clamp(2.25rem, 7.5vw, 6.5rem); }
-  [dir="rtl"] .fs-statement { font-size: clamp(2rem, 6vw, 5.25rem); }
-  [dir="rtl"] .fs-xxl  { font-size: clamp(2.25rem, 8vw, 7rem); }
+  [dir="rtl"] .fs-hero { font-size: clamp(2.5rem, 8.6vw, 7.75rem); }
+  [dir="rtl"] .fs-statement { font-size: clamp(2.1rem, 6.4vw, 5.75rem); }
+  [dir="rtl"] .fs-xxl  { font-size: clamp(2.4rem, 8.6vw, 7.5rem); }
 
   /* ============================================================================
      SURFACE TEXTURES
