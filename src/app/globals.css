@@ -1,0 +1,393 @@
+@import "tailwindcss";
+
+/* ============================================================================
+   A&K BRAND — DESIGN SYSTEM
+   "Editorial Industrial" — a fashion magazine printed on a factory floor.
+   ========================================================================== */
+
+@theme {
+  /* --- Colour ------------------------------------------------------------ */
+  /* Ink: warm near-black, the colour of raw indigo dye before it oxidises.  */
+  --color-ink: #0b0b0c;
+  --color-ink-soft: #17171a;
+  --color-ink-muted: #3a3a40;
+
+  /* Paper: unbleached cotton, the natural state of our primary fabric.      */
+  --color-paper: #f4f1ec;
+  --color-paper-dim: #e9e5dd;
+  --color-bone: #e6e1d8;
+  --color-ash: #b9b3a8;
+
+  /* Clay: sun-baked Egyptian brick. The single accent of the identity.      */
+  --color-clay: #c4502b;
+  --color-clay-deep: #9c3d20;
+  --color-clay-soft: #e0845f;
+
+  /* Indigo: the denim register.                                            */
+  --color-indigo: #1e2a38;
+  --color-sand: #cbbba0;
+
+  /* --- Type -------------------------------------------------------------- */
+  --font-display: var(--font-archivo), "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-sans: var(--font-archivo), "Archivo", "Helvetica Neue", Arial, sans-serif;
+  --font-serif: var(--font-instrument), "Instrument Serif", Georgia, serif;
+  --font-ar: var(--font-plex-ar), "IBM Plex Sans Arabic", "Segoe UI", Tahoma, sans-serif;
+  --font-ar-display: var(--font-alexandria), "Alexandria", "IBM Plex Sans Arabic", sans-serif;
+  --font-mono: ui-monospace, "SFMono-Regular", "SF Mono", Menlo, monospace;
+
+  /* --- Motion ------------------------------------------------------------ */
+  --ease-brand: cubic-bezier(0.16, 1, 0.3, 1);
+  --ease-in-brand: cubic-bezier(0.7, 0, 0.84, 0);
+
+  /* --- Layout ------------------------------------------------------------ */
+  --spacing-rail: 3.25rem;
+  --breakpoint-xs: 22rem;
+}
+
+@layer base {
+  /* ============================================================================
+     BASE
+     ========================================================================== */
+
+  :root {
+    --rail-w: 0px;
+    --nav-h: 4.5rem;
+    color-scheme: light;
+
+    /* Film grain, generated once as fractal noise and reused site-wide. */
+    --grain-url: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.82' numOctaves='3' stitchTiles='stitch'/%3E%3CfeColorMatrix type='saturate' values='0'/%3E%3C/filter%3E%3Crect width='180' height='180' filter='url(%23n)' opacity='0.42'/%3E%3C/svg%3E");
+  }
+
+  @media (min-width: 1024px) {
+    :root {
+      --rail-w: 3.25rem;
+      --nav-h: 5.5rem;
+    }
+  }
+
+  * {
+    -webkit-tap-highlight-color: transparent;
+  }
+
+  html {
+    background-color: var(--color-ink);
+    -webkit-text-size-adjust: 100%;
+    /* `clip` rather than `hidden`: it contains stray reveal transforms without
+       breaking position: sticky anywhere in the tree. */
+    overflow-x: clip;
+  }
+
+  html.lenis,
+  html.lenis body {
+    height: auto;
+  }
+
+  .lenis.lenis-smooth {
+    scroll-behavior: auto !important;
+  }
+
+  .lenis.lenis-stopped {
+    overflow: hidden;
+  }
+
+  body {
+    background-color: var(--color-paper);
+    color: var(--color-ink);
+    font-family: var(--font-sans);
+    font-synthesis-weight: none;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    overflow-x: clip;
+  }
+
+  [dir="rtl"] body {
+    font-family: var(--font-ar);
+  }
+
+  ::selection {
+    background-color: var(--color-clay);
+    color: var(--color-paper);
+  }
+
+  :focus-visible {
+    outline: 2px solid var(--color-clay);
+    outline-offset: 3px;
+    border-radius: 1px;
+  }
+
+  .dark-field :focus-visible {
+    outline-color: var(--color-clay-soft);
+  }
+
+  /* Native scrollbar, restyled to match the rail. */
+  @supports (scrollbar-width: thin) {
+    html {
+      scrollbar-width: thin;
+      scrollbar-color: var(--color-ash) transparent;
+    }
+  }
+}
+
+@layer components {
+  /* ============================================================================
+     TYPOGRAPHY PRIMITIVES
+     The house voice: industrial grotesk set enormous and tight, interrupted by
+     exactly one italic serif word per spread.
+     ========================================================================== */
+
+  .t-display {
+    font-family: var(--font-display);
+    font-weight: 800;
+    line-height: 0.82;
+    letter-spacing: -0.045em;
+    text-transform: uppercase;
+  }
+
+  [dir="rtl"] .t-display {
+    font-family: var(--font-ar-display);
+    font-weight: 700;
+    line-height: 1.08;
+    letter-spacing: 0;
+  }
+
+  .t-heading {
+    font-family: var(--font-display);
+    font-weight: 700;
+    line-height: 0.94;
+    letter-spacing: -0.03em;
+    text-transform: uppercase;
+  }
+
+  [dir="rtl"] .t-heading {
+    font-family: var(--font-ar-display);
+    font-weight: 600;
+    line-height: 1.3;
+    letter-spacing: 0;
+  }
+
+  .t-serif {
+    font-family: var(--font-serif);
+    font-style: italic;
+    font-weight: 400;
+    letter-spacing: -0.01em;
+    text-transform: none;
+  }
+
+  /* Arabic has no italic tradition — the accent becomes weight + colour. */
+  /* Arabic has no italic tradition — the accent becomes weight, not slant.
+     Colour stays with the utility applied at the call site. */
+  [dir="rtl"] .t-serif {
+    font-family: var(--font-ar-display);
+    font-style: normal;
+    font-weight: 300;
+  }
+
+  .t-label {
+    font-family: var(--font-mono);
+    font-size: 0.6875rem;
+    font-weight: 500;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    line-height: 1;
+  }
+
+  [dir="rtl"] .t-label {
+    font-family: var(--font-ar);
+    letter-spacing: 0;
+    font-size: 0.75rem;
+    font-weight: 500;
+  }
+
+  .t-body {
+    font-family: var(--font-sans);
+    font-weight: 400;
+    line-height: 1.62;
+    letter-spacing: -0.011em;
+  }
+
+  [dir="rtl"] .t-body {
+    font-family: var(--font-ar);
+    line-height: 1.95;
+    letter-spacing: 0;
+  }
+
+  /* Line/word masks for reveal animations. Arabic descenders sit much deeper
+     than Latin ones, so the clip box grows with the script. */
+  .mask-line {
+    padding-bottom: 0.1em;
+    margin-bottom: -0.1em;
+  }
+
+  [dir="rtl"] .mask-line {
+    padding-bottom: 0.32em;
+    margin-bottom: -0.32em;
+  }
+
+  .t-num {
+    font-family: var(--font-mono);
+    font-variant-numeric: tabular-nums;
+    letter-spacing: 0.02em;
+  }
+
+  /* Fluid display scale — clamps tuned so the mark never wraps on a 320px phone. */
+  .fs-mega   { font-size: clamp(4rem, 21vw, 20rem); }
+  .fs-hero   { font-size: clamp(2.6rem, 9vw, 8.25rem); }
+  .fs-statement { font-size: clamp(2.25rem, 7vw, 6.5rem); }
+  .fs-xxl    { font-size: clamp(2.75rem, 10vw, 9rem); }
+  .fs-xl     { font-size: clamp(2.25rem, 6.5vw, 5.5rem); }
+  .fs-lg     { font-size: clamp(1.75rem, 4.2vw, 3.25rem); }
+  .fs-md     { font-size: clamp(1.375rem, 2.6vw, 2rem); }
+  .fs-lead   { font-size: clamp(1.0625rem, 1.5vw, 1.375rem); }
+
+  [dir="rtl"] .fs-mega { font-size: clamp(3.5rem, 17vw, 15rem); }
+  [dir="rtl"] .fs-hero { font-size: clamp(2.25rem, 7.5vw, 6.5rem); }
+  [dir="rtl"] .fs-statement { font-size: clamp(2rem, 6vw, 5.25rem); }
+  [dir="rtl"] .fs-xxl  { font-size: clamp(2.25rem, 8vw, 7rem); }
+
+  /* ============================================================================
+     SURFACE TEXTURES
+     ========================================================================== */
+
+  /* Fine film grain — the paper stock of the whole site. */
+  .grain::after {
+    content: "";
+    position: absolute;
+    inset: 0;
+    pointer-events: none;
+    opacity: 0.4;
+    mix-blend-mode: multiply;
+    background-image: var(--grain-url);
+    background-size: 180px 180px;
+  }
+
+  .grain-invert::after {
+    mix-blend-mode: screen;
+    opacity: 0.28;
+  }
+
+  /* Warp & weft: the woven-cloth rule system used instead of plain borders. */
+  .weave {
+    background-image:
+      repeating-linear-gradient(
+        90deg,
+        color-mix(in oklab, currentColor 11%, transparent) 0 1px,
+        transparent 1px 9px
+      ),
+      repeating-linear-gradient(
+        0deg,
+        color-mix(in oklab, currentColor 7%, transparent) 0 1px,
+        transparent 1px 9px
+      );
+  }
+
+  .hairline {
+    border-color: color-mix(in oklab, currentColor 14%, transparent);
+  }
+
+  /* ============================================================================
+     INTERACTION
+     ========================================================================== */
+
+  /* Link with a rule that draws itself from the leading edge. */
+  .link-rule {
+    position: relative;
+    display: inline-block;
+  }
+
+  .link-rule::after {
+    content: "";
+    position: absolute;
+    inset-inline-start: 0;
+    bottom: -0.15em;
+    width: 100%;
+    height: 1px;
+    background-color: currentColor;
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.5s var(--ease-brand);
+  }
+
+  [dir="rtl"] .link-rule::after {
+    transform-origin: right;
+  }
+
+  .link-rule:hover::after,
+  .link-rule:focus-visible::after {
+    transform: scaleX(1);
+  }
+
+  .no-cursor,
+  .no-cursor * {
+    cursor: none;
+  }
+}
+
+/* ============================================================================
+   ACCESSIBILITY
+   ========================================================================== */
+
+.sr-only-focusable:not(:focus):not(:focus-within) {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip-path: inset(50%);
+  white-space: nowrap;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.001ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.001ms !important;
+    scroll-behavior: auto !important;
+  }
+
+  .marquee-track {
+    animation: none !important;
+    transform: none !important;
+  }
+}
+
+/* ============================================================================
+   KEYFRAMES
+   ========================================================================== */
+
+@keyframes ak-marquee {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(-50%, 0, 0); }
+}
+
+@keyframes ak-marquee-rtl {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(50%, 0, 0); }
+}
+
+@keyframes ak-blink {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.15; }
+}
+
+@keyframes ak-scroll-cue {
+  0% { transform: scaleY(0); transform-origin: top; }
+  45% { transform: scaleY(1); transform-origin: top; }
+  55% { transform: scaleY(1); transform-origin: bottom; }
+  100% { transform: scaleY(0); transform-origin: bottom; }
+}
+
+.marquee-track {
+  animation: ak-marquee var(--marquee-duration, 40s) linear infinite;
+}
+
+[dir="rtl"] .marquee-track {
+  animation-name: ak-marquee-rtl;
+}
+
+.marquee-paused .marquee-track {
+  animation-play-state: paused;
+}
